@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.mpd.bmsreactive.domain.Booking;
 import com.mpd.bmsreactive.repository.BookingRepository;
 
+import jakarta.persistence.OptimisticLockException;
+import jakarta.transaction.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -55,6 +57,7 @@ public class BookingService {
     }
 
     // Update booking details using flatMap
+    @Transactional
     public Mono<Booking> updateBooking(Long id, Booking updatedBooking) {
         return getBookingById(id)
                 .flatMap(existingBooking -> {
@@ -62,7 +65,10 @@ public class BookingService {
                     existingBooking.setAvailability(updatedBooking.getAvailability());
                     existingBooking.setCheckIn(updatedBooking.getCheckIn());
                     existingBooking.setCheckOut(updatedBooking.getCheckOut());
+                    // return Mono.just(bookingRepository.save(existingBooking));
+
                     return Mono.just(bookingRepository.save(existingBooking));
+
                 });
     }
 

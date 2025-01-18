@@ -1,4 +1,4 @@
-package com.mpd.bmsreactive;
+package com.mpd.bmsreactive.controller;
 
 import java.time.LocalDate;
 
